@@ -1,0 +1,26 @@
+{
+  "name": "blueskills-talent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cipherWizard31/BlueSkills-talent.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cipherWizard31/BlueSkills-talent/issues"
+  },
+  "homepage": "https://github.com/cipherWizard31/BlueSkills-talent#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
