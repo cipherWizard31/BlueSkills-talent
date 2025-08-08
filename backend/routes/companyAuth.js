@@ -80,5 +80,110 @@ const token = jwt.sign(
   res.json({ token });
 });
 
+// Edit Profile for companies
+router.put('/company/profile', verifyToken, async (req, res) => {
+  const companyId = req.user.id;
+  const fields = req.body;
+
+  if (!companyId) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const [existing] = await pool.query('SELECT * FROM company WHERE id = ?', [companyId]);
+
+    if (existing.length === 0) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    const current = existing[0];
+
+    // Use new values if provided, otherwise keep the old ones
+    const updatedDoctor = {
+      companyname: fields.companyname || current.companyname,
+      location: fields.location || current.location,
+      phoneno: fields.phoneno || current.phoneno,
+      email: fields.email || current.email,
+      password: fields.password || current.password,
+      password: fields.password || current.password,
+    };
+
+    // Perform the update
+    await pool.query(
+      `UPDATE doctor SET companyname = ?, location = ?, phoneno = ?, email = ?, password = ? WHERE id = ?`,
+      [
+        updatedDoctor.companyname,
+        updatedDoctor.location,
+        updatedDoctor.phoneno,
+        updatedDoctor.email,
+        updatedDoctor.password,
+        employeeId
+      ]
+    );
+
+    res.status(200).json({ message: 'Company profile updated successfully' });
+
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ message: 'Database update failed', error: err.message });
+  }
+});
+
+
+
+// DELETE company Profile
+router.delete('/company/profile', verifyToken, async (req, res) => {
+  const companyId = req.user?.id;
+
+  if (!companyId) {
+    return res.status(401).json({ message: 'Unauthorized: Missing Company ID' });
+  }
+
+  try {
+    const [result] = await pool.query('DELETE FROM company WHERE id = ?', [companyId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Company not found or already deleted' });
+    }
+
+    res.status(200).json({ message: 'Company profile deleted successfully' });
+
+  } catch (err) {
+    console.error('Error deleting profile:', err);
+    res.status(500).json({ message: 'Database deletion failed', error: err.message });
+  }
+});
+
+
+// Get profile of the logged-in company
+router.get('/company/profile', verifyToken, async (req, res) => {
+  const employeeId = req.user.id;
+
+  if (!employeeId) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const [rows] = await pool.query('SELECT * FROM company WHERE id = ?', [companyId]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+    const company = rows[0];
+
+    res.status(200).json({
+      id: company.id,
+      fullname: company.companyname,
+      location: company.location,
+      phoneno: company.phoneno,
+      email: company.email,
+      password: company.password,
+      verified: company.verified
+    });
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    res.status(500).json({ message: 'Database query failed', error: err.message });
+  }
+});
+
 
 module.exports = router;

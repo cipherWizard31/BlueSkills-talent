@@ -145,17 +145,17 @@ router.delete('/employee/profile', verifyToken, async (req, res) => {
   const employeeId = req.user?.id;
 
   if (!employeeId) {
-    return res.status(401).json({ message: 'Unauthorized: Missing doctor ID' });
+    return res.status(401).json({ message: 'Unauthorized: Missing Employee ID' });
   }
 
   try {
     const [result] = await pool.query('DELETE FROM employee WHERE id = ?', [employeeId]);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Doctor not found or already deleted' });
+      return res.status(404).json({ message: 'Employee not found or already deleted' });
     }
 
-    res.status(200).json({ message: 'Doctor profile deleted successfully' });
+    res.status(200).json({ message: 'Employee profile deleted successfully' });
 
   } catch (err) {
     console.error('Error deleting profile:', err);
