@@ -49,4 +49,4 @@ const requireRole = (role) => (req, res, next) => {
 };
 
 
-module.exports = { verifyToken, verifyUserTable, requireRole};
+module.exports = { verifyToken, verifyUserTable, requireRole };

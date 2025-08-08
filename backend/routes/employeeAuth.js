@@ -3,33 +3,15 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/db");
-const multer = require("multer");
-const cloudinary = require("../config/cloudinary");
 
 // Create a router instance
 const router = express.Router();
 
-// Multer memory storage for profile image
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
 // Register a new employee
-router.post("/employee/register", upload.single("profilePic"), async (req, res) => {
+router.post("/employee/register",  async (req, res) => {
   // Require company details from the request body
   const { fullname, skills, email, password, phoneno, location, resumeUrl, about } = req.body;
 
-
-    // Upload image to Cloudinary
-    let profilePicUrl = null;
-    if (req.file) {
-    const uploadResult = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-        { folder: "blue-collar/employees" }
-    );
-    profilePicUrl = uploadResult.secure_url;
-    }
-
-      
   // Hash the password using bcrypt
   const hashed = await bcrypt.hash(password, 10);
 

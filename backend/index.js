@@ -7,6 +7,8 @@ const { verifyToken, verifyUserTable, requireRole } = require('./middlewares/aut
 dotenv.config()
 const app = express()
 
+app.use(express.json())
+
 
 app.use('/api/auth', compAuth)
 
