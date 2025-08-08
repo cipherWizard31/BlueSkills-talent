@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const pool = require('../config/db');
 
-
+// Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   
@@ -22,6 +22,8 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+// Middleware to check wether the user is in the company or employee table
+// This is used to determine the role of the user for RBAC
 const verifyUserTable = async (req, res, next) => {
 
   try {
@@ -41,6 +43,7 @@ const verifyUserTable = async (req, res, next) => {
   }
 };
 
+// Role check middleware for Role Based Access Control (RBAC)
 const requireRole = (role) => (req, res, next) => {
   if (req.user?.role !== role) {
     return res.status(403).json({ message: 'Access denied: role mismatch' });
