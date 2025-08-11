@@ -32,3 +32,6 @@ Content-Type: application/json
 GET http://localhost:3000/employee
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJuZXRoYW55ZWRuZWthY2hldzM4M0BnbWFpbC5jb20iLCJpYXQiOjE3NTQ1ODYwNzEsImV4cCI6MTc1NDU4OTY3MX0.ebjWPBZIc9XHHqOJnCNfQ9P1OqSWhJCIk46C4hI6PkM
 Content-Type: application/json
+
+### Upload a pdf
+GET http://localhost:3000/upload

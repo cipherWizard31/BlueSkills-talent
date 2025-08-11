@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const compAuth= require('./routes/companyAuth')
 const empAuth = require('./routes/employeeAuth')
 const { verifyToken, verifyUserTable, requireRole } = require('./middlewares/auth')
+const { uploadPdfToSupabase } = require('./config/supabase')
 
 dotenv.config()
 const app = express()
@@ -24,6 +25,11 @@ app.get('/company', verifyToken, verifyUserTable, requireRole('company'), (req, 
 
 app.get('/employee', verifyToken, verifyUserTable, requireRole('employee'), (req, res) => {
   res.send('Employee only RBAC is running')
+})
+
+
+app.get('/upload', (req, res) => {
+  uploadPdfToSupabase();
 })
 
 const PORT = process.env.PORT || 3000
